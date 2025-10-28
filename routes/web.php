@@ -20,6 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('tickets/export', [TicketController::class, 'export'])->name('tickets.export');
     Route::get('tickets/{ticket}/timeline', [TicketController::class, 'timeline'])->name('tickets.timeline');
     Route::post('tickets/{ticket}/activities', [TicketController::class, 'addActivity'])->name('tickets.activities.add');
+    Route::post('tickets/{ticket}/end-working', [TicketController::class, 'endWorking'])->name('tickets.end-working');
     Route::post('tickets/{ticket}/complete', [TicketController::class, 'complete'])->name('tickets.complete');
     Route::post('tickets/{ticket}/revisit', [TicketController::class, 'revisit'])->name('tickets.revisit');
     Route::resource('tickets', TicketController::class);

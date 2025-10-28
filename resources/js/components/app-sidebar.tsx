@@ -38,24 +38,12 @@ const ticketingNavItems: NavItem[] = [
 		icon: Ticket,
 		items: [
 			{
-				title: 'All Tickets',
-				href: '/tickets',
+				title: '🟢 Open',
+				href: '/tickets?filter=open',
 			},
 			{
-				title: 'Open',
-				href: '/tickets?status=Open',
-			},
-			{
-				title: 'In Progress',
-				href: '/tickets?status=In Progress',
-			},
-			{
-				title: 'Resolved',
-				href: '/tickets?status=Resolved',
-			},
-			{
-				title: 'Closed',
-				href: '/tickets?status=Closed',
+				title: '🔴 Closed',
+				href: '/tickets?filter=closed',
 			},
 		],
 	},
