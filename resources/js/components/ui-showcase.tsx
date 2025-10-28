@@ -98,9 +98,7 @@ export function UIShowcase() {
                             <div className="flex flex-wrap gap-2">
                                 <Badge>Default</Badge>
                                 <Badge variant="secondary">Secondary</Badge>
-                                <Badge variant="destructive">
-                                    Destructive
-                                </Badge>
+                                <Badge variant="destructive">Destructive</Badge>
                                 <Badge variant="outline">Outline</Badge>
                             </div>
                             <div className="flex items-center gap-2">
@@ -359,7 +357,9 @@ export function UIShowcase() {
                                 <Radix.Badge color="green">Green</Radix.Badge>
                                 <Radix.Badge color="red">Red</Radix.Badge>
                             </div>
-                            <Radix.Code>const greeting = "Hello World";</Radix.Code>
+                            <Radix.Code>
+                                const greeting = "Hello World";
+                            </Radix.Code>
                         </CardContent>
                     </Card>
                 </div>
@@ -418,9 +418,7 @@ export function UIShowcase() {
 
                             <Radix.Box className="flex-1">
                                 {/* Radix Typography */}
-                                <Radix.Heading size="4">
-                                    John Doe
-                                </Radix.Heading>
+                                <Radix.Heading size="4">John Doe</Radix.Heading>
                                 <Radix.Text size="2" color="gray">
                                     Software Engineer
                                 </Radix.Text>

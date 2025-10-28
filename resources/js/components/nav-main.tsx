@@ -1,4 +1,9 @@
 import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@/components/ui/collapsible';
+import {
     SidebarGroup,
     SidebarGroupLabel,
     SidebarMenu,
@@ -8,7 +13,6 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { resolveUrl } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -63,31 +67,45 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                                 <CollapsibleContent>
                                     <SidebarMenuSub>
                                         {item.items?.map((subItem) => {
-                                            const isSubActive = page.url.includes(resolveUrl(subItem.href));
-                                            const isOpen = subItem.title.includes('Open');
-                                            const isClosed = subItem.title.includes('Closed');
+                                            const isSubActive =
+                                                page.url.includes(
+                                                    resolveUrl(subItem.href),
+                                                );
+                                            const isOpen =
+                                                subItem.title.includes('Open');
+                                            const isClosed =
+                                                subItem.title.includes(
+                                                    'Closed',
+                                                );
 
                                             return (
-                                                <SidebarMenuSubItem key={subItem.title}>
+                                                <SidebarMenuSubItem
+                                                    key={subItem.title}
+                                                >
                                                     <SidebarMenuSubButton
                                                         asChild
                                                         isActive={isSubActive}
                                                         className={
                                                             isOpen
-                                                                ? 'hover:bg-green-50 dark:hover:bg-green-950/20 data-[active=true]:bg-green-100 dark:data-[active=true]:bg-green-900/30 data-[active=true]:text-green-700 dark:data-[active=true]:text-green-400'
+                                                                ? 'hover:bg-green-50 data-[active=true]:bg-green-100 data-[active=true]:text-green-700 dark:hover:bg-green-950/20 dark:data-[active=true]:bg-green-900/30 dark:data-[active=true]:text-green-400'
                                                                 : isClosed
-                                                                ? 'hover:bg-red-50 dark:hover:bg-red-950/20 data-[active=true]:bg-red-100 dark:data-[active=true]:bg-red-900/30 data-[active=true]:text-red-700 dark:data-[active=true]:text-red-400'
-                                                                : ''
+                                                                  ? 'hover:bg-red-50 data-[active=true]:bg-red-100 data-[active=true]:text-red-700 dark:hover:bg-red-950/20 dark:data-[active=true]:bg-red-900/30 dark:data-[active=true]:text-red-400'
+                                                                  : ''
                                                         }
                                                     >
-                                                        <Link href={subItem.href} prefetch>
-                                                            <span className={
-                                                                isOpen
-                                                                    ? 'text-green-600 dark:text-green-400 font-medium'
-                                                                    : isClosed
-                                                                    ? 'text-red-600 dark:text-red-400 font-medium'
-                                                                    : ''
-                                                            }>
+                                                        <Link
+                                                            href={subItem.href}
+                                                            prefetch
+                                                        >
+                                                            <span
+                                                                className={
+                                                                    isOpen
+                                                                        ? 'font-medium text-green-600 dark:text-green-400'
+                                                                        : isClosed
+                                                                          ? 'font-medium text-red-600 dark:text-red-400'
+                                                                          : ''
+                                                                }
+                                                            >
                                                                 {subItem.title}
                                                             </span>
                                                         </Link>

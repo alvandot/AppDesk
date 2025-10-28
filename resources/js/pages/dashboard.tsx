@@ -1,3 +1,4 @@
+import { UIShowcase } from '@/components/ui-showcase';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -9,7 +10,6 @@ import {
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { UIShowcase } from '@/components/ui-showcase';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
