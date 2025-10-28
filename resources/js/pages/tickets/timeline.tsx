@@ -448,8 +448,8 @@ export default function Timeline({ ticket }: Props) {
                                                 !isCompleted &&
                                                 index === currentStageIndex;
 
-                                            // Hanya tampilkan stage yang sudah complete ATAU stage current
-                                            // Stage berikutnya tidak ditampilkan (sequential workflow)
+                                            // Only show completed stages OR current stage
+                                            // Next stages are not displayed (sequential workflow)
                                             if (
                                                 index > currentStageIndex &&
                                                 !isCompleted
