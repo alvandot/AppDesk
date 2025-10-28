@@ -29,9 +29,23 @@ class TicketController extends Controller
             });
         }
 
-        // Status filter
+        // Status filter (legacy)
         if ($request->has('status') && $request->status) {
             $query->where('status', $request->status);
+        }
+
+        // New filter parameter for Open/Closed
+        if ($request->has('filter') && $request->filter) {
+            $filter = $request->filter;
+
+            if ($filter === 'open') {
+                // Open tickets: status not Closed or Resolved
+                $query->whereNotIn('status', ['Closed', 'Resolved']);
+            } elseif ($filter === 'closed') {
+                // Closed tickets: status is Closed AND completed_at is not null (benar-benar selesai)
+                $query->where('status', 'Closed')
+                    ->whereNotNull('completed_at');
+            }
         }
 
         $tickets = $query->latest()->paginate(10)->withQueryString();
@@ -41,6 +55,7 @@ class TicketController extends Controller
             'filters' => [
                 'search' => $request->search,
                 'status' => $request->status,
+                'filter' => $request->filter,
             ],
         ]);
     }
@@ -162,7 +177,7 @@ class TicketController extends Controller
     public function addActivity(Request $request, Ticket $ticket)
     {
         $validated = $request->validate([
-            'activity_type' => 'required|in:received,on_the_way,arrived,start_working,need_part,completed,revisit,status_change,note',
+            'activity_type' => 'required|in:received,hit_the_road,arrived,start_working,end_working,finish_job,need_part,completed,revisit,status_change,note',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'activity_time' => 'required|date',
@@ -174,6 +189,50 @@ class TicketController extends Controller
         ]);
 
         return back()->with('success', 'Activity added successfully.');
+    }
+
+    /**
+     * Handle end working stage with file uploads.
+     */
+    public function endWorking(Request $request, Ticket $ticket)
+    {
+        $validated = $request->validate([
+            'ct_bad_part' => 'required|file|mimes:jpg,jpeg,png,pdf|max:10240',
+            'ct_good_part' => 'required|file|mimes:jpg,jpeg,png,pdf|max:10240',
+            'bap_file' => 'required|file|mimes:pdf|max:10240',
+            'notes' => 'nullable|string',
+        ]);
+
+        $attachments = [];
+
+        if ($request->hasFile('ct_bad_part')) {
+            $attachments['ct_bad_part'] = $request->file('ct_bad_part')->store('tickets/ct_bad_parts', 'public');
+        }
+
+        if ($request->hasFile('ct_good_part')) {
+            $attachments['ct_good_part'] = $request->file('ct_good_part')->store('tickets/ct_good_parts', 'public');
+        }
+
+        if ($request->hasFile('bap_file')) {
+            $attachments['bap_file'] = $request->file('bap_file')->store('tickets/bap_files', 'public');
+        }
+
+        // Create end_working activity with attachments
+        $ticket->activities()->create([
+            'activity_type' => 'end_working',
+            'title' => 'End Working',
+            'description' => $validated['notes'] ?? 'Work completed with documents uploaded',
+            'activity_time' => now(),
+            'user_id' => $request->user()->id,
+            'attachments' => $attachments,
+        ]);
+
+        // Update ticket status to In Progress
+        $ticket->update([
+            'status' => 'In Progress',
+        ]);
+
+        return back()->with('success', 'End working stage completed successfully.');
     }
 
     /**
